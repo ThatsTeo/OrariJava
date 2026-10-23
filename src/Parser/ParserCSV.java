@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 // TODO: Parser file CSV per estrarre docenti, ore e classi
 
@@ -17,6 +16,7 @@ public class ParserCSV {
 
     public ParserCSV(File file) {
         this.fileCSV = file;
+        parse();
     }
 
     public ArrayList<String[]> parse() {
@@ -32,10 +32,9 @@ public class ParserCSV {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(delimiter);
-                for (String value : values) {
+                for (String _ : values) {
                     data.add(values);
                 }
-                System.out.println();
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -56,8 +55,22 @@ public class ParserCSV {
 
     @Override
     public String toString() {
+        ArrayList<String> datiFinali = new ArrayList<>();
+
+        boolean nomeColonne = true;
+
+        for(String[] i: datiFile) {
+            if(nomeColonne) {
+                nomeColonne = false;
+                continue;
+            }
+            for(String s: i) {
+                datiFinali.add(s + "\n");
+            }
+        }
+
         return "ParserCSV{" +
-                "datiFile=" + datiFile +
+                "datiFile=\n" + datiFinali +
                 '}';
     }
 }
