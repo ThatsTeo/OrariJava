@@ -17,7 +17,8 @@ public class MenuIniziale extends JFrame{
 
     private JButton bottoneMenuFile = new JButton("Scegli file");
     private JLabel nomeFileSelezionato = new JLabel("Futuro nome file");
-    JTextArea contenutoFile = new JTextArea("Contenuto del file selezionato...");
+
+    JTextArea contenutoFile = new JTextArea("Contenuto del file selezionato...",15, 30);
 
     public MenuIniziale() {
         super("Opzione orari");
@@ -33,7 +34,9 @@ public class MenuIniziale extends JFrame{
 
         add(nomeFileSelezionato);
 
-        add(contenutoFile);
+        contenutoFile.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(contenutoFile);
+        add(scrollPane);
 
         setVisible(true);
     }
@@ -52,7 +55,7 @@ public class MenuIniziale extends JFrame{
 
             this.parser = new ParserCSV(filePicker.getSelectedFile());
             ArrayList<String[]> data = parser.parse();
-            contenutoFile.setText(String.valueOf(data));
+            contenutoFile.setText(parser.toString());
         }
     }
 }
