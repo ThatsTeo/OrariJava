@@ -1,31 +1,35 @@
 package ClassiBasi;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
+// Rappresenta un docente
 public class Docente {
-
     private String nomeCognome;
-    private int ore = 0;
-    private TreeMap<Classe, Map<Materia, Integer>> classiMaterieOre;
-    private GiorniSettimana giorniLiberi;
+    private List<Assegnazione> assegnazioni;
+    private Set<GiorniSettimana> giorniLiberi;
 
     public Docente(String nomeCognome) {
         this.nomeCognome = nomeCognome;
+        this.assegnazioni = new ArrayList<>();
+        this.giorniLiberi = new HashSet<>();
     }
 
-    public void aggiungiClasse(Classe classeDaAggiungere, int ore, Materia materia) {
-        if(this.classiMaterieOre.containsKey(classeDaAggiungere)) {
-            System.err.println("Il Docente ha gia questa classe assegnata! ");
-            return;
-        } else if (classeDaAggiungere == null) {
-            System.err.println("La classe inserita non è valida! ");
-            return;
+    // Aggiunge un'assegnazione al docente
+    public void aggiungiAssegnazione(Assegnazione assegnazione) {
+        this.assegnazioni.add(assegnazione);
+    }
+
+    public void aggiungiAssegnazione(Classe classe, Materia materia, int ore) {
+        this.assegnazioni.add(new Assegnazione(this, classe, materia, ore));
+    }
+
+    // Calcola il totale delle ore settimanale del docente
+    public int getOreTotali() {
+        int totale = 0;
+        for (Assegnazione a : assegnazioni) {
+            totale += a.getOreSettimanali();
         }
-        HashMap<Materia, Integer> materiaOre = new HashMap<>();
-        materiaOre.put(materia, ore);
-        this.classiMaterieOre.put(classeDaAggiungere, materiaOre);
+        return totale;
     }
 
     public String getNomeCognome() {
@@ -36,27 +40,37 @@ public class Docente {
         this.nomeCognome = nomeCognome;
     }
 
-    public int getOre() {
-        return ore;
+    public List<Assegnazione> getAssegnazioni() {
+        return assegnazioni;
     }
 
-    public void setOre(int ore) {
-        this.ore = ore;
-    }
-
-    public TreeMap<Classe, Map<Materia, Integer>> getClassiMaterieOre() {
-        return classiMaterieOre;
-    }
-
-    public void setClassiMaterieOre(TreeMap<Classe, Map<Materia, Integer>> classiMaterieOre) {
-        this.classiMaterieOre = classiMaterieOre;
-    }
-
-    public GiorniSettimana getGiorniLiberi() {
+    public Set<GiorniSettimana> getGiorniLiberi() {
         return giorniLiberi;
     }
 
-    public void setGiorniLiberi(GiorniSettimana giorniLiberi) {
+    public void setGiorniLiberi(Set<GiorniSettimana> giorniLiberi) {
         this.giorniLiberi = giorniLiberi;
+    }
+
+    public void aggiungiGiornoLibero(GiorniSettimana giorno) {
+        this.giorniLiberi.add(giorno);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Docente docente = (Docente) o;
+        return Objects.equals(nomeCognome, docente.nomeCognome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nomeCognome);
+    }
+
+    @Override
+    public String toString() {
+        return nomeCognome;
     }
 }

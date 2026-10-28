@@ -1,24 +1,38 @@
 package ClassiBasi;
 
-import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+// Rappresenta una lezione/slot orario con compresenza
 public class Lezione {
-    private Docente docente;
+    private List<Docente> docenti;
     private Materia materia;
-    private Duration durata;
+    private Classe classe;
 
-    public Lezione(Docente docente, Materia materia, Duration durata) {
-        this.docente = docente;
+    // Costruttore per docente singolo
+    public Lezione(Docente docente, Materia materia, Classe classe) {
+        this.docenti = new ArrayList<>();
+        if (docente != null) {
+            this.docenti.add(docente);
+        }
         this.materia = materia;
-        this.durata = durata;
+        this.classe = classe;
+    }
+
+    // Costruttore per compresenza
+    public Lezione(List<Docente> docenti, Materia materia, Classe classe) {
+        this.docenti = new ArrayList<>(docenti);
+        this.materia = materia;
+        this.classe = classe;
+    }
+
+    public List<Docente> getDocenti() {
+        return docenti;
     }
 
     public Docente getDocente() {
-        return docente;
-    }
-
-    public void setDocente(Docente docente) {
-        this.docente = docente;
+        return docenti.isEmpty() ? null : docenti.getFirst();
     }
 
     public Materia getMateria() {
@@ -29,11 +43,19 @@ public class Lezione {
         this.materia = materia;
     }
 
-    public Duration getDurata() {
-        return durata;
+    public Classe getClasse() {
+        return classe;
     }
 
-    public void setDurata(Duration durata) {
-        this.durata = durata;
+    public void setClasse(Classe classe) {
+        this.classe = classe;
+    }
+
+    @Override
+    public String toString() {
+        String docentiStr = docenti.stream()
+                .map(Docente::getNomeCognome)
+                .collect(Collectors.joining(", "));
+        return materia.getNomeMateria() + " (" + docentiStr + ")";
     }
 }

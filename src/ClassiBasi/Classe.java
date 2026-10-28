@@ -1,47 +1,78 @@
 package ClassiBasi;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
+// Rappresenta una classe scolastica con orario e docenti
 public class Classe {
-    private Tuple<Integer, Character, String> nomeClasse;
-    private ArrayList<Docente> docenti;
+    private int anno;
+    private char sezione;
+    private String indirizzo;
+    private List<Docente> docenti;
+    private List<Assegnazione> assegnazioni;
     private Map<Materia, Integer> materieOre;
     private Lezione[][] tabellaLezioni;
 
-    public Classe(ArrayList<Docente> docenti, Map<Materia, Integer> materieOre) {
-        this.docenti = docenti;
-        this.materieOre = materieOre;
+    public Classe(int anno, char sezione, String indirizzo) {
+        this.anno = anno;
+        this.sezione = sezione;
+        this.indirizzo = indirizzo;
+        this.docenti = new ArrayList<>();
+        this.assegnazioni = new ArrayList<>();
+        this.materieOre = new LinkedHashMap<>();
+        this.tabellaLezioni = new Lezione[GiorniSettimana.ORE_AL_GIORNO][GiorniSettimana.GIORNI_SCOLASTICI];
     }
 
-    public Classe(ArrayList<Docente> docenti, Map<Materia, Integer> materieOre, Lezione[][] tabellaLezioni) {
-        this.docenti = docenti;
-        this.materieOre = materieOre;
-        this.tabellaLezioni = tabellaLezioni;
+    // Restituisce il nome della classe (es. "5A INFO")
+    public String getNomeCompleto() {
+        return anno + "" + sezione + " " + indirizzo;
     }
 
-    public Tuple<Integer, Character, String> getNomeClasse() {
-        return nomeClasse;
+    // Registra un docente se non gia presente
+    public void aggiungiDocente(Docente docente) {
+        if (!docenti.contains(docente)) {
+            docenti.add(docente);
+        }
     }
 
-    public void setNomeClasse(Tuple<Integer, Character, String> nomeClasse) {
-        this.nomeClasse = nomeClasse;
+    // Registra un'assegnazione per la classe
+    public void aggiungiAssegnazione(Assegnazione assegnazione) {
+        assegnazioni.add(assegnazione);
+        aggiungiDocente(assegnazione.getDocente());
+        aggiungiMateriaOre(assegnazione.getMateria(), assegnazione.getOreSettimanali());
     }
 
-    public ArrayList<Docente> getDocenti() {
+    // Aggiorna il totale ore per una materia
+    public void aggiungiMateriaOre(Materia materia, int ore) {
+        materieOre.merge(materia, ore, Integer::sum);
+    }
+
+    // Calcola il totale delle ore previste per la classe
+    public int getTotaleOrePreviste() {
+        return materieOre.values().stream().mapToInt(Integer::intValue).sum();
+    }
+
+    public int getAnno() {
+        return anno;
+    }
+
+    public char getSezione() {
+        return sezione;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public List<Docente> getDocenti() {
         return docenti;
     }
 
-    public void setDocenti(ArrayList<Docente> docenti) {
-        this.docenti = docenti;
+    public List<Assegnazione> getAssegnazioni() {
+        return assegnazioni;
     }
 
     public Map<Materia, Integer> getMaterieOre() {
         return materieOre;
-    }
-
-    public void setMaterieOre(Map<Materia, Integer> materieOre) {
-        this.materieOre = materieOre;
     }
 
     public Lezione[][] getTabellaLezioni() {
@@ -50,5 +81,23 @@ public class Classe {
 
     public void setTabellaLezioni(Lezione[][] tabellaLezioni) {
         this.tabellaLezioni = tabellaLezioni;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Classe classe = (Classe) o;
+        return anno == classe.anno && sezione == classe.sezione && Objects.equals(indirizzo, classe.indirizzo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(anno, sezione, indirizzo);
+    }
+
+    @Override
+    public String toString() {
+        return getNomeCompleto();
     }
 }
