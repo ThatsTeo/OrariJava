@@ -1,38 +1,62 @@
 package ClassiBasi;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Docente {
 
-    String nomeCognome;
+    private String nomeCognome;
     private int ore = 0;
-    ArrayList<Classe> classi;
-    ArrayList<Materia> materie;
+    private TreeMap<Classe, Map<Materia, Integer>> classiMaterieOre;
+    private GiorniSettimana giorniLiberi;
 
     public Docente(String nomeCognome) {
         this.nomeCognome = nomeCognome;
     }
 
-    public void aggiungiClasse(Classe classeDaAggiungere) {
-        if(this.classi.contains(classeDaAggiungere)) {
+    public void aggiungiClasse(Classe classeDaAggiungere, int ore, Materia materia) {
+        if(this.classiMaterieOre.containsKey(classeDaAggiungere)) {
             System.err.println("Il Docente ha gia questa classe assegnata! ");
             return;
         } else if (classeDaAggiungere == null) {
             System.err.println("La classe inserita non è valida! ");
             return;
         }
-        this.classi.add(classeDaAggiungere);
+        HashMap<Materia, Integer> materiaOre = new HashMap<>();
+        materiaOre.put(materia, ore);
+        this.classiMaterieOre.put(classeDaAggiungere, materiaOre);
     }
 
-    public void aggiungiMateria(Materia materiaDaAggiungere) {
-        if(this.materie.contains(materiaDaAggiungere)) {
-            System.err.println("Il docente ha gia la materia assegnata! ");
-            return;
-        } else if (materiaDaAggiungere == null) {
-            System.err.println("La materia inserita non è valida! ");
-            return;
-        }
+    public String getNomeCognome() {
+        return nomeCognome;
+    }
 
-        this.materie.add(materiaDaAggiungere);
+    public void setNomeCognome(String nomeCognome) {
+        this.nomeCognome = nomeCognome;
+    }
+
+    public int getOre() {
+        return ore;
+    }
+
+    public void setOre(int ore) {
+        this.ore = ore;
+    }
+
+    public TreeMap<Classe, Map<Materia, Integer>> getClassiMaterieOre() {
+        return classiMaterieOre;
+    }
+
+    public void setClassiMaterieOre(TreeMap<Classe, Map<Materia, Integer>> classiMaterieOre) {
+        this.classiMaterieOre = classiMaterieOre;
+    }
+
+    public GiorniSettimana getGiorniLiberi() {
+        return giorniLiberi;
+    }
+
+    public void setGiorniLiberi(GiorniSettimana giorniLiberi) {
+        this.giorniLiberi = giorniLiberi;
     }
 }

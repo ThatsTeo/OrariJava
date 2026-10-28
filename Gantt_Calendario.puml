@@ -1,0 +1,27 @@
+@startgantt
+Project starts 2026-10-14
+
+'FASE 0
+[Analisi dei requisiti] requires 3 days
+[Progettazione dei dati] requires 10 days
+[WBS e Calendario] requires 10 days
+
+[Analisi dei requisiti] starts 2026-10-14
+[Progettazione dei dati] starts at [Analisi dei requisiti]'s end
+[WBS e Calendario] starts at [Analisi dei requisiti]'s end
+
+' FASE 1
+[Classi e modello] requires 1 days
+[Lettura e parsing del CSV] requires 1 days
+[Validazione e segnalazione errori] requires 3 day
+[Riepilogo dei dati importanti] requires 2 day
+[File CSV di prova] requires 1 day
+
+[Classi e modello] starts at [WBS e Calendario]'s end
+[Lettura e parsing del CSV] starts at [Classi e modello]'s end
+[Validazione e segnalazione errori] starts at [Lettura e parsing del CSV]'s end
+[Riepilogo dei dati importanti] starts at [Lettura e parsing del CSV]'s end
+[File CSV di prova] starts at [Progettazione dei dati]'s end
+
+' FASE 2
+@endgantt

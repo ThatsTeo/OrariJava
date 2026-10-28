@@ -16,7 +16,7 @@ public class MenuIniziale extends JFrame{
     ParserCSV parser = null;
 
     private JButton bottoneMenuFile = new JButton("Scegli file");
-    private JLabel nomeFileSelezionato = new JLabel("Futuro nome file");
+    private JLabel nomeFileSelezionato = new JLabel("Nome del file");
 
     JTextArea contenutoFile = new JTextArea("Contenuto del file selezionato...",15, 30);
 

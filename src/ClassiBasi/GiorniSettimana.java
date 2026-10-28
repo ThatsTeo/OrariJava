@@ -1,4 +1,11 @@
 package ClassiBasi;
 
-public interface GiorniSettimana {
+public enum GiorniSettimana {
+    LUNEDI,
+    MARTEDI,
+    MERCOLEDI,
+    GIOVEDI,
+    VENERDI,
+    SABATO,
+    DOMENICA;
 }
